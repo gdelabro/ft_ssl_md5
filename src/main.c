@@ -6,12 +6,6 @@ void	quit(char *str)
 	exit(0);
 }
 
-void	aff_options(t_ssl *s)
-{
-	ft_printf("{\ns: %s\np: %d\nq: %d\nr: %d\nfile: %s\nhash func: %d\n}\n",
-	s->s, s->p, s->q, s->r, s->file, s->hash_func);
-}
-
 int		main(int ac, char **av)
 {
 	t_ssl	s;

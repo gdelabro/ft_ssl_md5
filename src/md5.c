@@ -1,22 +1,5 @@
 #include "../ssl_md5.h"
 
-unsigned int	switch_endian(unsigned int nb)
-{
-	int ret;
-
-	ret = 0;
-	ret |= (nb & 0xff000000) >> 24;
-	ret |= (nb & 0x00ff0000) >> 8;
-	ret |= (nb & 0x0000ff00) << 8;
-	ret |= (nb & 0x000000ff) << 24;
-	return (ret);
-}
-
-unsigned int	rotate(unsigned int nb, unsigned int rot)
-{
-	return ((nb << rot) | (nb >> (32-rot)));
-}
-
 void			md5_funct(char *message, t_ssl *ssl)
 {
 	int s[64] = {7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,
@@ -97,7 +80,7 @@ void			md5_funct(char *message, t_ssl *ssl)
 			A = D;
 			D = C;
 			C = B;
-			B = B + rotate(f, s[i]);
+			B = B + ROTL(f, s[i]);
 		}
 		a0 += A;
 		b0 += B;

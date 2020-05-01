@@ -3,9 +3,15 @@
 void	determin_hash_func(char *str, t_ssl *s)
 {
 	if (!ft_strcmp(str, "md5"))
-		s->hash_func = 1;
+	{
+		ft_memcpy(s->hash_name, "MD5", 4);
+		s->hash_func = &md5_funct;
+	}
 	else if (!ft_strcmp(str, "sha256"))
-		s->hash_func = 2;
+	{
+		ft_memcpy(s->hash_name, "SHA256", 7);
+		s->hash_func = &sha256_funct;
+	}
 	else
 		quit("invalid hash function\n");
 }
