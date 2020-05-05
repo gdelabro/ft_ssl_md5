@@ -12,6 +12,11 @@ void	determin_hash_func(char *str, t_ssl *s)
 		ft_memcpy(s->hash_name, "SHA256", 7);
 		s->hash_func = &sha256_funct;
 	}
+	else if (!ft_strcmp(str, "sha224"))
+	{
+		ft_memcpy(s->hash_name, "SHA224", 7);
+		s->hash_func = &sha256_funct;
+	}
 	else
 		quit("invalid hash function\n");
 }

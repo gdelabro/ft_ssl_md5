@@ -21,14 +21,14 @@ static const unsigned int g_k[64] = {
 
 void			sha256_init(t_ssl *s, t_sha256 *sha, char *message)
 {
-	sha->a0 = 0x6a09e667;
-	sha->b0 = 0xbb67ae85;
-	sha->c0 = 0x3c6ef372;
-	sha->d0 = 0xa54ff53a;
-	sha->e0 = 0x510e527f;
-	sha->f0 = 0x9b05688c;
-	sha->g0 = 0x1f83d9ab;
-	sha->h0 = 0x5be0cd19;
+	sha->a0 = !ft_strcmp(s->hash_name, "SHA256") ? 0x6a09e667 : 0xc1059ed8;
+	sha->b0 = !ft_strcmp(s->hash_name, "SHA256") ? 0xbb67ae85 : 0x367cd507;
+	sha->c0 = !ft_strcmp(s->hash_name, "SHA256") ? 0x3c6ef372 : 0x3070dd17;
+	sha->d0 = !ft_strcmp(s->hash_name, "SHA256") ? 0xa54ff53a : 0xf70e5939;
+	sha->e0 = !ft_strcmp(s->hash_name, "SHA256") ? 0x510e527f : 0xffc00b31;
+	sha->f0 = !ft_strcmp(s->hash_name, "SHA256") ? 0x9b05688c : 0x68581511;
+	sha->g0 = !ft_strcmp(s->hash_name, "SHA256") ? 0x1f83d9ab : 0x64f98fa7;
+	sha->h0 = !ft_strcmp(s->hash_name, "SHA256") ? 0x5be0cd19 : 0xbefa4fa4;
 	sha->nb_grps = 1 + (ft_strlen(message) + 8) / 64;
 	if (!(sha->msg = malloc(64 * sha->nb_grps)))
 		quit("malloc failed\n");
@@ -83,7 +83,7 @@ void			sha256_funct(char *message, t_ssl *ssl)
 		sha.g0 += sha.g;
 		sha.h0 += sha.h;
 	}
-	ssl->size_hash = 8;
+	ssl->size_hash = !ft_strcmp(ssl->hash_name, "SHA256") ? 8 : 7;
 	ssl->hash[0] = sha.a0;
 	ssl->hash[1] = sha.b0;
 	ssl->hash[2] = sha.c0;
