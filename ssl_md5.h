@@ -3,7 +3,6 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <time.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include "ft_printf/ft_printf.h"
@@ -19,6 +18,56 @@ int				little_endian;
 
 typedef struct s_ssl t_ssl;
 
+typedef struct	s_md5
+{
+	int				a0;
+	int				b0;
+	int				c0;
+	int				d0;
+	unsigned int	a;
+	unsigned int	b;
+	unsigned int	c;
+	unsigned int	d;
+	char			*msg;
+	int				nb_grps;
+	int				q;
+	size_t			size;
+	int				grp;
+	int				i;
+	unsigned int	*m;
+	int				f;
+	int				g;
+}				t_md5;
+
+typedef struct	s_sha256
+{
+	unsigned int	w[64];
+	int				a0;
+	int				b0;
+	int				c0;
+	int				d0;
+	int				e0;
+	int				f0;
+	int				g0;
+	int				h0;
+	int				t1;
+	int				t2;
+	char			*msg;
+	int				nb_grps;
+	size_t			size;
+	int				grp;
+	int				i;
+	unsigned int	*m;
+	unsigned int	a;
+	unsigned int	b;
+	unsigned int	c;
+	unsigned int	d;
+	unsigned int	e;
+	unsigned int	f;
+	unsigned int	g;
+	unsigned int	h;
+}				t_sha256;
+
 typedef struct	s_ssl
 {
 	int		p;
@@ -32,6 +81,7 @@ typedef struct	s_ssl
 	int		size_hash;
 	int		hash[8];
 	char	hash_name[32];
+	int		len;
 }				t_ssl;
 
 void			quit(char *str);
