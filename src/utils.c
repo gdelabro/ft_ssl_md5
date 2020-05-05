@@ -12,12 +12,12 @@ unsigned int	switch_endian(unsigned int nb)
 	return (ret);
 }
 
-unsigned int	rotateleft(unsigned int nb, unsigned int rot)
+unsigned int	rotl(unsigned int nb, unsigned int rot)
 {
-	return ((nb << rot) | (nb >> (32-rot)));
+	return ((nb << rot) | (nb >> (32 - rot)));
 }
 
-unsigned int	rotateright(unsigned int nb, unsigned int rot)
+unsigned int	rotr(unsigned int nb, unsigned int rot)
 {
-	return ((nb >> rot) | (nb << (32-rot)));
+	return ((nb >> rot) | (nb << (32 - rot)));
 }

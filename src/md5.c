@@ -80,7 +80,7 @@ void			md5_funct(char *message, t_ssl *ssl)
 			A = D;
 			D = C;
 			C = B;
-			B = B + ROTL(f, s[i]);
+			B = B + rotl(f, s[i]);
 		}
 		a0 += A;
 		b0 += B;
