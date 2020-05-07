@@ -29,22 +29,22 @@ void			sha256_init(t_ssl *s, t_sha256 *sha, char *message)
 	sha->f0 = !ft_strcmp(s->hash_name, "SHA256") ? 0x9b05688c : 0x68581511;
 	sha->g0 = !ft_strcmp(s->hash_name, "SHA256") ? 0x1f83d9ab : 0x64f98fa7;
 	sha->h0 = !ft_strcmp(s->hash_name, "SHA256") ? 0x5be0cd19 : 0xbefa4fa4;
-	sha->nb_grps = 1 + (ft_strlen(message) + 8) / 64;
+	sha->nb_grps = 1 + (s->len + 8) / 64;
 	if (!(sha->msg = malloc(64 * sha->nb_grps)))
 		quit("malloc failed\n");
 	ft_bzero(sha->msg, 64 * sha->nb_grps);
-	memcpy(sha->msg, message, ft_strlen(message));
-	sha->size = ft_strlen(message) * 8;
+	memcpy(sha->msg, message, s->len);
+	sha->size = s->len * 8;
 	sha->size = (size_t)switch_endian(sha->size) << 32
 		| (size_t)switch_endian(sha->size) >> 32;
-	sha->msg[ft_strlen(message)] = 0x80;
+	sha->msg[s->len] = 0x80;
 	memcpy(sha->msg + (64 * sha->nb_grps) - 8, &(sha->size), 8);
 	sha->grp = -1;
 }
 
 void			sha256_compression(t_sha256 *sha)
 {
-	sha->m = (int*)(sha->msg + sha->grp * 64);
+	sha->m = (unsigned int*)(sha->msg + sha->grp * 64);
 	ft_memcpy(&(sha->a), &(sha->a0), 8 * sizeof(unsigned int));
 	while (++sha->i < 64)
 	{

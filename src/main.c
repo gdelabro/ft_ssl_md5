@@ -12,8 +12,9 @@ int		main(int ac, char **av)
 	t_ssl	s;
 	int		n;
 
+	(void)ac;
 	n = 1;
-	little_endian = *(char*)&n;
+	s.little_endian = *(char*)&n;
 	parsing(av, &s);
 	hashing(&s);
 	return 0;

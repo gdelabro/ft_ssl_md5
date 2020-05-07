@@ -14,8 +14,6 @@
 # define O0(x) (rotr(x, 7) ^ rotr(x, 18) ^ ((x) >> 3))
 # define O1(x) (rotr(x, 17) ^ rotr(x, 19) ^ ((x) >> 10))
 
-int				little_endian;
-
 typedef struct s_ssl t_ssl;
 
 typedef struct	s_md5
@@ -82,6 +80,7 @@ typedef struct	s_ssl
 	int		hash[8];
 	char	hash_name[32];
 	int		len;
+	int		little_endian;
 }				t_ssl;
 
 void			quit(char *str);

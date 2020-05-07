@@ -17,6 +17,7 @@ void	fill_file_content(t_ssl *s)
 	char			*tmp;
 	int				i;
 
+	s->len = 0;
 	s->file_content = NULL;
 	fd = open(s->file, O_RDONLY);
 	if (fd <= 0 || fstat(fd, &st) != 0 || !S_ISREG(st.st_mode))
@@ -24,39 +25,52 @@ void	fill_file_content(t_ssl *s)
 	while ((i = read(fd, buf, 500)) > 0)
 	{
 		buf[i] = 0;
-		tmp = s->file_content;
-		s->file_content = ft_strjoin(s->file_content, buf);
-		free(tmp);
+		tmp = malloc(s->len + i + 1);
+		s->len ? ft_memcpy(tmp, s->file_content, s->len) : 0;
+		ft_memcpy(tmp + s->len, buf, i + 1);
+		s->len ? free(s->file_content) : 0;
+		s->file_content = tmp;
+		s->len += i;
 	}
 	if (!i && !s->file_content)
 		s->file_content = ft_strdup("");
 }
 
-void	hashing(t_ssl *s)
+void	handle_input(t_ssl *s)
 {
 	char	buf[501];
 	int		i;
 	char	*tmp;
 
-	s->input = NULL;
 	while ((s->p || (!s->file && !s->s)) && (i = read(0, buf, 500)))
 	{
 		buf[i] = 0;
-		tmp = s->input;
-		s->input = ft_strjoin(s->input, buf);
-		free(tmp);
+		tmp = malloc (s->len + i + 1);
+		s->len ? ft_memcpy(tmp, s->input, s->len) : 0;
+		ft_memcpy(tmp + s->len, buf, i + 1);
+		s->len ? free(s->input) : 0;
+		s->input = tmp;
+		s->len += i;
 	}
-	if (s->input && ft_strcmp(s->input, ""))
+	if (!s->input && (s->p || (!s->file && !s->s)))
+		s->input = ft_strdup("");
+	if (s->input)
 	{
-		s->hash_func(s->input ? s->input : "", s);
+		s->hash_func(s->input, s);
 		s->p ? ft_printf("%s", s->input) : 0;
 		s->p && s->input[ft_strlen(s->input) - 1] != '\n' ? ft_printf("\n") : 0;
 		print_hash(s);
 		ft_printf("\n");
 		ft_strdel(&s->input);
 	}
+}
+
+void	hashing(t_ssl *s)
+{
+	handle_input(s);
 	if (s->s)
 	{
+		s->len = ft_strlen(s->s);
 		s->hash_func(s->s, s);
 		!s->q && !s->r ? ft_printf("%s (\"%s\") = ", s->hash_name, s->s) : 0;
 		print_hash(s);

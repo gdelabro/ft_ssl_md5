@@ -30,18 +30,18 @@ void			md5_init(t_ssl *ssl, t_md5 *md5, char *message)
 	md5->b0 = 0xefcdab89;
 	md5->c0 = 0x98badcfe;
 	md5->d0 = 0x10325476;
-	md5->nb_grps = 1 + (ft_strlen(message) + 8) / 64;
+	md5->nb_grps = 1 + (ssl->len + 8) / 64;
 	if (!(md5->msg = malloc(64 * md5->nb_grps)))
 		quit("malloc failed\n");
 	ft_bzero(md5->msg, 64 * md5->nb_grps);
-	memcpy(md5->msg, message, ft_strlen(message));
-	md5->size = ft_strlen(message) * 8;
-	md5->msg[ft_strlen(message)] = 0x80;
+	memcpy(md5->msg, message, ssl->len);
+	md5->size = ssl->len * 8;
+	md5->msg[ssl->len] = 0x80;
 	memcpy(md5->msg + (64 * md5->nb_grps) - 8, &(md5->size), 8);
 	md5->grp = -1;
 }
 
-void			md5_compression(t_ssl *ssl, t_md5 *md5)
+void			md5_compression(t_md5 *md5)
 {
 		while (++md5->i < 64)
 		{
@@ -77,13 +77,13 @@ void			md5_funct(char *message, t_ssl *ssl)
 	md5_init(ssl, &md5, message);
 	while (++md5.grp < md5.nb_grps)
 	{
-		md5.m = (int*)(md5.msg + md5.grp * 64);
+		md5.m = (unsigned int*)(md5.msg + md5.grp * 64);
 		md5.a = md5.a0;
 		md5.b = md5.b0;
 		md5.c = md5.c0;
 		md5.d = md5.d0;
 		md5.i = -1;
-		md5_compression(ssl, &md5);
+		md5_compression(&md5);
 		md5.a0 += md5.a;
 		md5.b0 += md5.b;
 		md5.c0 += md5.c;
