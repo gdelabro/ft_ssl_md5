@@ -1,5 +1,5 @@
-#ifndef SSL_H
-# define SSL_H
+#ifndef SSL_MD5_H
+# define SSL_MD5_H
 
 # include <unistd.h>
 # include <stdlib.h>
